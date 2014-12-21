@@ -13,22 +13,22 @@ static const char *usage_str = "[Flags] [Files]";
 static const char *desc_str  = "Files: List of files to output with line-numbers added.\n";
 
 #define XARGS \
-    X(help, "help", 0, 'h', "Display help") \
-    X(delimiter, "delimiter", 1, 'd', "Use the string provided to the delimiter flag instead of a tab") \
-    X(last, NULL, 0, '\0', NULL)
+    X(help, "help", 'h', 0, NULL, "Display help") \
+    X(delimiter, "delimiter", 'd', 1, "String", "Use the string provided to the delimiter flag instead of a tab") \
+    X(last, NULL, '\0', 0, NULL, NULL)
 
 enum arg_index {
   ARG_EXTRA = ARG_PARSER_EXTRA,
   ARG_LNG = ARG_PARSER_LNG,
   ARG_ERR = ARG_PARSER_ERR,
   ARG_DONE = ARG_PARSER_DONE,
-#define X(enu, id, arg, op, help_text) ARG_##enu,
+#define X(enu, ...) ARG_ENUM(enu)
   XARGS
 #undef X
 };
 
 static const struct arg lnum_args[] = {
-#define X(enu, id, arg, op, help_text) [ARG_##enu] = { .lng = id, .shrt = op, .help_txt = help_text, .has_arg = arg },
+#define X(...) CREATE_ARG(__VA_ARGS__)
   XARGS
 #undef X
 };
