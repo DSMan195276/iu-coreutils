@@ -121,6 +121,11 @@ int arg_parser(int parser_argc, char **parser_argv, const struct arg *args) {
   return load_extra_arg(parser_argv);
 }
 
+#define ARG_LEN 20
+
+#define QQ(s) #s
+#define Q(s) QQ(s)
+
 void display_help_text(const char *prog, const char *usage, const char *desc, const struct arg *args) {
   const struct arg *a;
   printf("Usage: %s %s \n"
@@ -136,10 +141,13 @@ void display_help_text(const char *prog, const char *usage, const char *desc, co
       printf("     ");
     }
 
-    if (a->lng) {
-      printf("--%-15s ", a->lng);
+    if (a->lng && !a->has_arg) {
+      printf("--%-" Q(ARG_LEN) "s ", a->lng);
+    } else if (a->lng) {
+      size_t len = ARG_LEN - strlen(a->lng) - 1;
+      printf("--%s=%-*s ", a->lng, len, a->arg_txt);
     } else {
-      printf("                  ");
+      printf("  %" Q(ARG_LEN) "s ", "");
     }
 
     printf("%s\n", a->help_txt);

@@ -5,6 +5,7 @@ struct arg {
   const char *lng;
   char shrt;
   const char *help_txt;
+  const char *arg_txt;
 
   int has_arg :1;
 };
