@@ -108,6 +108,10 @@ int arg_parser(int parser_argc, char **parser_argv, const struct arg *args) {
     }
 
     shrt = cur + 1;
+
+    if (*shrt == '\0') {
+      shrt = NULL;
+    }
   }
 
   if (shrt) {
