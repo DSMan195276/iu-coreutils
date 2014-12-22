@@ -4,8 +4,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "arg_parser.h"
+#include "stringcasecmp.h"
 
 #define MAX_LINE_SIZE 1000
 
@@ -15,6 +17,7 @@ static const char *desc_str  = "Files: List of files to output with line-numbers
 #define XARGS \
     X(help, "help", 'h', 0, NULL, "Display help") \
     X(delimiter, "delimiter", 'd', 1, "String", "Use the string provided to the delimiter flag instead of a tab") \
+    X(numwidth, "width", 'w', 1, "Int", "Specify the width to pad the line number too - The default is no padding") \
     X(last, NULL, '\0', 0, NULL, NULL)
 
 enum arg_index {
@@ -37,6 +40,7 @@ static const struct arg lnum_args[] = {
 void show_line_numbers(FILE *in);
 
 static const char *delimiter = "\t";
+static int num_width_pad = 0;
 
 int main(int argc, char **argv) {
   bool had_files = false;
@@ -50,6 +54,9 @@ int main(int argc, char **argv) {
       return 0;
     case ARG_delimiter:
       delimiter = argarg;
+      break;
+    case ARG_numwidth:
+      num_width_pad = strtol(argarg, NULL, 0);
       break;
     case ARG_EXTRA:
       had_files = true;
@@ -80,7 +87,7 @@ void show_line_numbers(FILE *in) {
   char line[MAX_LINE_SIZE];
 
   while ( fgets(line, MAX_LINE_SIZE, in) ) {
-    printf("%d%s%s", line_count, delimiter, line);
+    printf("%-*d%s%s", num_width_pad, line_count, delimiter, line);
     line_count++;
   }
 }
