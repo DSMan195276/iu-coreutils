@@ -23,13 +23,14 @@ extern const void *argarg;
 #define ARG_ENUM(enu) ARG_##enu,
 
 #define ARG(id, op, arg, arg_text, help_text) \
-    { .lng = id, \
-      .shrt = op, \
-      .help_txt = help_text, \
-      .has_arg = arg, \
-      .arg_txt = arg_text \
-    }
+  { .lng = id, \
+    .shrt = op, \
+    .help_txt = help_text, \
+    .has_arg = arg, \
+    .arg_txt = arg_text \
+  }
 
-#define CREATE_ARG(enu, id, op, arg, arg_text, help_text) [ARG_##enu] = ARG(id, op, arg, arg_text, help_text),
+#define CREATE_ARG(enu, id, op, arg, arg_text, help_text) \
+  [ARG_##enu] = ARG(id, op, arg, arg_text, help_text),
 
 #endif
