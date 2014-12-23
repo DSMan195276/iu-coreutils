@@ -3,8 +3,12 @@ CFLAGS += -Wall -std=c11 -I./include
 
 BINDIR := bin
 
-PROGRAMS := $(wildcard *.c)
-PROGNAMES := $(PROGRAMS:.c=)
+PROGNAMES := \
+	cat \
+	ls \
+	lnum \
+	hlsym \
+
 PROGBINS := $(patsubst %,$(BINDIR)/%,$(PROGNAMES))
 
 COMMONSRC := $(wildcard ./common/*.c)
@@ -16,6 +20,10 @@ all: $(PROGBINS)
 
 $(BINDIR):
 	@mkdir $(BINDIR)
+
+%.c: %.l
+	@echo "$< -o $@"
+	@$(LEX) $(LFLAGS) -o $@ $<
 
 %.o: %.c
 	@echo "$< -o $@"
