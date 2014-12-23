@@ -88,6 +88,8 @@ int main(int argc, char **argv) {
   if (!had_files) {
     show_line_numbers(stdin);
   }
+
+  return 0;
 }
 
 void show_line_numbers(FILE *in) {
