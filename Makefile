@@ -11,6 +11,7 @@ PROGNAMES := \
 	true \
 	false \
 	seq \
+	tee \
 
 PROGBINS := $(patsubst %,$(BINDIR)/%,$(PROGNAMES))
 
