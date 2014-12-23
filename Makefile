@@ -8,6 +8,8 @@ PROGNAMES := \
 	ls \
 	lnum \
 	hlsym \
+	true \
+	false \
 
 PROGBINS := $(patsubst %,$(BINDIR)/%,$(PROGNAMES))
 
