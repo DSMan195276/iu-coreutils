@@ -149,6 +149,10 @@ static char *match_colors[] = {
 
 %%
 
+void fake_func(void) {
+    yyunput(0, NULL);
+}
+
 void output_with_highlight(FILE *in) {
     yyin = in;
 
