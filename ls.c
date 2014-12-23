@@ -21,7 +21,6 @@ static const char *desc_str  = "Files: List of files to provide information on.\
 
 enum arg_index {
   ARG_EXTRA = ARG_PARSER_EXTRA,
-  ARG_LNG = ARG_PARSER_LNG,
   ARG_ERR = ARG_PARSER_ERR,
   ARG_DONE = ARG_PARSER_DONE,
 #define X(enu, id, arg, op, help_text) ARG_##enu,

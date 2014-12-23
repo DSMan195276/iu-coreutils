@@ -10,8 +10,7 @@ struct arg {
   int has_arg :1;
 };
 
-#define ARG_PARSER_EXTRA -4
-#define ARG_PARSER_LNG -3
+#define ARG_PARSER_EXTRA -3
 #define ARG_PARSER_ERR -2
 #define ARG_PARSER_DONE -1
 

@@ -23,7 +23,6 @@ static const char *desc_str  = "Files: List of files to output with line-numbers
 
 enum arg_index {
   ARG_EXTRA = ARG_PARSER_EXTRA,
-  ARG_LNG = ARG_PARSER_LNG,
   ARG_ERR = ARG_PARSER_ERR,
   ARG_DONE = ARG_PARSER_DONE,
 #define X(enu, ...) ARG_ENUM(enu)
