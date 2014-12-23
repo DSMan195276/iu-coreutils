@@ -40,6 +40,7 @@ int main(int argc, char **argv) {
 
         case ARG_help:
             display_help_text(argv[0], usage_str, desc_str, args);
+            break;
         case ARG_version:
             printf("%s", version_text);
             return 0;
