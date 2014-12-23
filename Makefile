@@ -10,6 +10,7 @@ PROGNAMES := \
 	hlsym \
 	true \
 	false \
+	seq \
 
 PROGBINS := $(patsubst %,$(BINDIR)/%,$(PROGNAMES))
 
