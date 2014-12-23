@@ -1,4 +1,7 @@
 // example - Boiler-plate code for most utilities
+#define UTILITY_NAME ""
+
+#include "common.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +13,8 @@ static const char *usage_str = "";
 static const char *desc_str  = "";
 
 #define XARGS \
+    X(help, "help", 'h', 0, NULL, "Display help") \
+    X(version, "version", 'v', 0, NULL, "Display version information") \
     X(last, NULL, '\0', 0, NULL, NULL)
 
 enum arg_index {
@@ -21,7 +26,7 @@ enum arg_index {
 #undef X
 };
 
-static const struct arg test_args[] = {
+static const struct arg args[] = {
 #define X(...) CREATE_ARG(__VA_ARGS__)
   XARGS
 #undef X
@@ -30,9 +35,14 @@ static const struct arg test_args[] = {
 int main(int argc, char **argv) {
     enum arg_index ret;
 
-    while ((ret = arg_parser(argc, argv, test_args)) != ARG_DONE) {
+    while ((ret = arg_parser(argc, argv, args)) != ARG_DONE) {
         switch (ret) {
 
+        case ARG_help:
+            display_help_text(argv[0], usage_str, desc_str, args);
+        case ARG_version:
+            printf("%s", version_text);
+            return 0;
         case ARG_EXTRA:
 
         case ARG_ERR:

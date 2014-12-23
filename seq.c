@@ -1,5 +1,9 @@
 // seq - Print a sequence of numbers
 
+#define UTILITY_NAME "seq"
+
+#include "common.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,6 +17,7 @@ static const char *desc_str  = "First: Number to start counting from. Defaults t
 
 #define XARGS \
     X(help, "help", 'h', 0, NULL, "Display help") \
+    X(version, "version", 'v', 0, NULL, "Display version information") \
     X(separator, "separator", 's', 1, "String", "Use 'String' to separate numbers. Default '\\n'.") \
     X(last, NULL, '\0', 0, NULL, NULL)
 
@@ -43,6 +48,10 @@ int main(int argc, char **argv) {
         switch (ret) {
         case ARG_help:
             display_help_text(argv[0], usage_str, desc_str, seq_args);
+            break;
+        case ARG_version:
+            printf("%s", version_text);
+            return 0;
 
         case ARG_separator:
             sep = argarg;

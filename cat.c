@@ -1,4 +1,7 @@
 // cat - read and output files
+#define UTILITY_NAME "cat"
+
+#include "common.h"
 
 #include <stdio.h>
 

@@ -1,5 +1,8 @@
 // lnum - prepend line numbers to the given input (stdin by default)
 //      - intended to be used as a filter.
+#define UTILITY_NAME "lnum"
+
+#include "common.h"
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -16,6 +19,7 @@ static const char *desc_str  = "Files: List of files to output with line-numbers
 
 #define XARGS \
     X(help, "help", 'h', 0, NULL, "Display help") \
+    X(version, "version", 'v', 0, NULL, "Display version information") \
     X(delimiter, "delimiter", 'd', 1, "String", "Use the string provided to the delimiter flag instead of a tab") \
     X(numwidth, "width", 'w', 1, "Int", "Specify the width to pad the line number too - The default is no padding") \
     X(numalign, "align", 'a', 1, "[left|right]", "Specify the alignment of the line number, 'left' or 'right'. Default is left") \
@@ -56,6 +60,9 @@ int main(int argc, char **argv) {
     switch (ret) {
     case ARG_help:
       display_help_text(argv[0], usage_str, desc_str, lnum_args);
+      return 0;
+    case ARG_version:
+      printf("%s", version_text);
       return 0;
     case ARG_delimiter:
       delimiter = argarg;

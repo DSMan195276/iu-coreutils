@@ -1,4 +1,7 @@
 // ls - list files and directories inside a directory
+#define UTILITY_NAME "ls"
+
+#include "common.h"
 
 #include <dirent.h>
 #include <stdbool.h>
@@ -17,6 +20,7 @@ static const char *desc_str  = "Files: List of files to provide information on.\
   X(all, "all", 0, 'a', "Do not ignore entries starting with '.'") \
   X(lng, NULL,  0, 'l', "Use a long listing format") \
   X(help, "help", 0, 'h', "Display help") \
+  X(version, "version", 0, 'v', "Display version information") \
   X(last, NULL, 0, '\0', NULL)
 
 enum arg_index {
@@ -47,6 +51,9 @@ int main(int argc, char **argv) {
     switch (ret) {
     case ARG_help:
       display_help_text(argv[0], usage_str, desc_str, ls_args);
+      return 0;
+    case ARG_version:
+      printf("%s", version_text);
       return 0;
     case ARG_all:
       show_all = true;

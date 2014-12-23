@@ -1,6 +1,8 @@
 
 %top{
-#define _XOPEN_SOURCE
+#define UTILITY_NAME "hlsym"
+
+#include "common.h"
 }
 
 %{
@@ -16,6 +18,7 @@ static const char *desc_str  = "Files: List of files to output with syntax highl
 
 #define XARGS \
     X(help, "help", 'h', 0, NULL, "Display help") \
+    X(version, "version", 'v', 0, NULL, "Display version information") \
     X(last, NULL, '\0', 0, NULL, NULL)
 
 enum arg_index {
@@ -166,6 +169,9 @@ int main(int argc, char **argv) {
         case ARG_help:
             display_help_text(argv[0], usage_str, desc_str, hisyn_args);
             break;
+        case ARG_version:
+            printf("%s", version_text);
+            return 0;
         case ARG_EXTRA:
             had_files = true;
             if (strcmp(argarg, "-") != 0) {
