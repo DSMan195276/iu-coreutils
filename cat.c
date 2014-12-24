@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
             has_file = true;
             if (strcmp(argarg, "-") != 0) {
                 file = open(argarg, O_RDONLY | O_NONBLOCK);
-                if (file == 0) {
+                if (file == -1) {
                     perror(argarg);
                     return 1;
                 }
