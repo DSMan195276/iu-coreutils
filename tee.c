@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/select.h>
 
 #include "arg_parser.h"
 
@@ -42,12 +47,13 @@ void read_write_files(void);
 static bool append = false;
 
 static int file_count = 0;
-static FILE *file_list[MAX_FILES] = { NULL };
+static int file_list[MAX_FILES] = { 0 };
 
 int main(int argc, char **argv) {
+    int file;
     enum arg_index ret;
 
-    file_list[file_count++] = stdout;
+    file_list[file_count++] = STDOUT_FILENO;
 
     while ((ret = arg_parser(argc, argv, args)) != ARG_DONE) {
         switch (ret) {
@@ -68,10 +74,10 @@ int main(int argc, char **argv) {
                 return 0;
             }
             if (strcmp(argarg, "-") == 0) {
-                file_list[file_count++] = stdout;
+                file_list[file_count++] = STDOUT_FILENO;
             } else {
-                FILE *file = fopen(argarg, (append)? "a": "w");
-                if (file == NULL) {
+                file = open(argarg, O_WRONLY | O_CREAT | O_APPEND, 0777);
+                if (file == -1) {
                     perror(argarg);
                     return 1;
                 }
@@ -93,13 +99,29 @@ int main(int argc, char **argv) {
 void read_write_files(void) {
     char buffer[BUF_SIZE];
     int len, i;
+    fd_set rdfds;
+    int readfd = STDIN_FILENO;
 
     do {
-        len = fread(buffer, 1, sizeof(buffer), stdin);
-        for (i = 0; i < file_count; i++)
-            fwrite(buffer, 1, len, file_list[i]);
+        int sel;
+        FD_ZERO(&rdfds);
+        FD_SET(readfd, &rdfds);
 
-    } while (!feof(stdin) && !ferror(stdin));
+        sel = select(readfd + 1, &rdfds, NULL, NULL, NULL);
+
+        if (sel == -1) {
+            perror("stdin");
+            return ;
+        }
+
+        len = read(readfd, buffer, sizeof(buffer));
+        if (len == 0)
+            break;
+
+        for (i = 0; i < file_count; i++)
+            write(file_list[i], buffer, len);
+
+    } while (1);
 
     return ;
 }
