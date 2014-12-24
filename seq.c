@@ -79,7 +79,8 @@ int main(int argc, char **argv) {
     for (i = first; i <= last; i += inc)
         printf("%d%s", i, sep);
 
-    putchar('\n');
+    if (strcmp(sep, "\n") != 0)
+        putchar('\n');
 
     return 0;
 }
