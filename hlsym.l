@@ -12,6 +12,7 @@
 
 #include "arg_parser.h"
 #include "termcols.h"
+#include "file.h"
 
 static const char *usage_str = "[Flags] [Files]";
 static const char *desc_str  = "Files: List of files to output with syntax highlighting.\n";
@@ -178,17 +179,13 @@ int main(int argc, char **argv) {
             return 0;
         case ARG_EXTRA:
             had_files = true;
-            if (strcmp(argarg, "-") != 0) {
-              file = fopen(argarg, "r");
-              if (file == NULL) {
-                perror(argarg);
-                return 1;
-              }
-              output_with_highlight(file);
-              fclose(file);
-            } else {
-              output_with_highlight(stdin);
+            file = fopen_with_dash(argarg, "r");
+            if (file == NULL) {
+              perror(argarg);
+              return 1;
             }
+            output_with_highlight(file);
+            fclose_with_dash(file);
             break;
         default:
             return 0;

@@ -14,6 +14,7 @@
 #include <sys/select.h>
 
 #include "arg_parser.h"
+#include "file.h"
 
 #define MAX_FILES 50
 #define BUF_SIZE 1024
@@ -50,7 +51,6 @@ static int file_count = 0;
 static int file_list[MAX_FILES] = { 0 };
 
 int main(int argc, char **argv) {
-    int file;
     enum arg_index ret;
 
     file_list[file_count++] = STDOUT_FILENO;
@@ -69,20 +69,16 @@ int main(int argc, char **argv) {
             break;
 
         case ARG_EXTRA:
-            if (file_count == 50) {
+            if (file_count == MAX_FILES) {
                 printf("%s: Error, max number of outputs is %d\n", argv[0], MAX_FILES);
                 return 0;
             }
-            if (strcmp(argarg, "-") == 0) {
-                file_list[file_count++] = STDOUT_FILENO;
-            } else {
-                file = open(argarg, O_WRONLY | O_CREAT | O_APPEND, 0777);
-                if (file == -1) {
-                    perror(argarg);
-                    return 1;
-                }
-                file_list[file_count++] = file;
+            file_list[file_count] = open_with_dash(argarg, O_WRONLY | O_CREAT | O_APPEND, 0777);
+            if (file_list[file_count] == -1) {
+                perror(argarg);
+                return 1;
             }
+            file_count++;
             break;
 
         case ARG_ERR:

@@ -11,6 +11,7 @@
 
 #include "arg_parser.h"
 #include "stringcasecmp.h"
+#include "file.h"
 
 #define MAX_LINE_SIZE 1000
 
@@ -75,17 +76,13 @@ int main(int argc, char **argv) {
       break;
     case ARG_EXTRA:
       had_files = true;
-      if (strcmp(argarg, "-") != 0) {
-        file = fopen(argarg, "r");
-        if (file == NULL) {
-          perror(argarg);
-          return 1;
-        }
-        show_line_numbers(file);
-        fclose(file);
-      } else {
-        show_line_numbers(stdin);
+      file = fopen_with_dash(argarg, "r");
+      if (file == NULL) {
+        perror(argarg);
+        return 1;
       }
+      show_line_numbers(file);
+      fclose_with_dash(file);
       break;
     default:
       return 0;

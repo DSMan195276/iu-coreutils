@@ -13,6 +13,7 @@
 #include <sys/select.h>
 
 #include "arg_parser.h"
+#include "file.h"
 
 static const char *usage_str = "";
 static const char *desc_str  = "";
@@ -55,17 +56,13 @@ int main(int argc, char **argv) {
 
         case ARG_EXTRA:
             has_file = true;
-            if (strcmp(argarg, "-") != 0) {
-                file = open(argarg, O_RDONLY | O_NONBLOCK);
-                if (file == -1) {
-                    perror(argarg);
-                    return 1;
-                }
-                output_file(file, argarg, STDOUT_FILENO);
-                close(file);
-            } else {
-                output_file(STDIN_FILENO, "stdin", STDOUT_FILENO);
+            file = open_with_dash(argarg, O_RDONLY | O_NONBLOCK);
+            if (file == -1) {
+                perror(argarg);
+                return 1;
             }
+            output_file(file, argarg, STDOUT_FILENO);
+            close(file);
             break;
 
         case ARG_ERR:
