@@ -1,5 +1,5 @@
 // sort - Sort lines of Files
-#define UTILITY_NAME ""
+#define UTILITY_NAME "sort"
 
 #include "common.h"
 
