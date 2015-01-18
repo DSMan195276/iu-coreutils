@@ -1,5 +1,5 @@
 
-CFLAGS += -Wall -std=c11 -I./include
+CFLAGS += -Wall -std=c11 -I./include -g
 
 BINDIR := bin
 
@@ -15,13 +15,17 @@ PROGNAMES := \
 	wc \
 
 PROGBINS := $(patsubst %,$(BINDIR)/%,$(PROGNAMES))
+PROGBINSIU := $(patsubst %,$(BINDIR)/iu/iu%,$(PROGNAMES))
 
 COMMONSRC := $(wildcard ./common/*.c)
 COMMONOBJ := $(COMMONSRC:.c=.o)
 COMMONAR := ./common.a
 
 .PHONY: all clean
-all: $(PROGBINS)
+all: $(PROGBINS) $(PROGBINSIU)
+
+$(BINDIR)/iu: | $(BINDIR)
+	@mkdir $(BINDIR)/iu
 
 $(BINDIR):
 	@mkdir $(BINDIR)
@@ -48,6 +52,10 @@ $(foreach prog,$(PROGNAMES),$(eval $(call prog_shortcut,$(prog))))
 $(BINDIR)/%: %.c $(COMMONAR) | $(BINDIR)
 	@echo "$< -o $@"
 	@$(CC) $(CFLAGS) $< $(COMMONAR) -o $@
+
+$(BINDIR)/iu/iu%: $(BINDIR)/% | $(BINDIR)/iu
+	@echo "$< -> $@"
+	@cp -a $< $@
 
 clean:
 	@rm -f $(COMMONAR)
