@@ -19,8 +19,9 @@
 #define MAX_FILES 50
 #define BUF_SIZE 1024
 
-static const char *usage_str = "[Flags] [Files]";
-static const char *desc_str  = "Files: One or more files to write the input from stdin too.\n";
+static const char *arg_str = "[Flags] [Files]";
+static const char *usage_str = "Read from standard input and write to Files and standard output\n";
+static const char *arg_desc_str  = "Files: One or more files to write the input from stdin too.\n";
 
 #define XARGS \
     X(append, "append", 'a', 0, NULL, "Append to files instead of overwriting") \
@@ -58,7 +59,7 @@ int main(int argc, char **argv) {
     while ((ret = arg_parser(argc, argv, args)) != ARG_DONE) {
         switch (ret) {
         case ARG_help:
-            display_help_text(argv[0], usage_str, desc_str, args);
+            display_help_text(argv[0], arg_str, usage_str, arg_desc_str, args);
             break;
         case ARG_version:
             printf("%s", version_text);

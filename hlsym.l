@@ -14,8 +14,9 @@
 #include "termcols.h"
 #include "file.h"
 
-static const char *usage_str = "[Flags] [Files]";
-static const char *desc_str  = "Files: List of files to output with syntax highlighting.\n";
+static const char *arg_str = "[Flags] [Files]";
+static const char *usage_str = "Apply syntax-highlighting to Files\n";
+static const char *arg_desc_str  = "Files: List of files to output with syntax highlighting.\n";
 
 #define XARGS \
     X(help, "help", 'h', 0, NULL, "Display help") \
@@ -31,7 +32,7 @@ enum arg_index {
 #undef X
 };
 
-static const struct arg hisyn_args[] = {
+static const struct arg args[] = {
 #define X(...) CREATE_ARG(__VA_ARGS__)
   XARGS
 #undef X
@@ -169,10 +170,10 @@ int main(int argc, char **argv) {
     FILE *file;
     enum arg_index ret;
 
-    while ((ret = arg_parser(argc, argv, hisyn_args)) != ARG_DONE) {
+    while ((ret = arg_parser(argc, argv, args)) != ARG_DONE) {
         switch (ret) {
         case ARG_help:
-            display_help_text(argv[0], usage_str, desc_str, hisyn_args);
+            display_help_text(argv[0], arg_str, usage_str, arg_desc_str, args);
             break;
         case ARG_version:
             printf("%s", version_text);

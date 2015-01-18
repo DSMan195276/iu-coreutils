@@ -126,12 +126,14 @@ int arg_parser(int parser_argc, char **parser_argv, const struct arg *args) {
 #define QQ(s) #s
 #define Q(s) QQ(s)
 
-void display_help_text(const char *prog, const char *usage, const char *desc, const struct arg *args) {
+void display_help_text(const char *prog, const char *arg_str, const char *usage, const char *arg_desc_str, const struct arg *args)
+{
   const struct arg *a;
   printf("Usage: %s %s \n"
+         "%s"
          "\n"
          "%s"
-         "Flags:\n", prog, usage, desc);
+         "Flags:\n", prog, arg_str, usage, arg_desc_str);
 
   for (a = args; a->lng || a->shrt; a++) {
     printf("  ");

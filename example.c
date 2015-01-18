@@ -9,8 +9,9 @@
 
 #include "arg_parser.h"
 
+static const char *arg_str = "";
 static const char *usage_str = "";
-static const char *desc_str  = "";
+static const char *arg_desc_str  = "";
 
 #define XARGS \
     X(help, "help", 'h', 0, NULL, "Display help") \
@@ -37,13 +38,13 @@ int main(int argc, char **argv) {
 
     while ((ret = arg_parser(argc, argv, args)) != ARG_DONE) {
         switch (ret) {
-
         case ARG_help:
-            display_help_text(argv[0], usage_str, desc_str, args);
-            break;
+            display_help_text(argv[0], arg_str, usage_str, arg_desc_str, args);
+            return 0;
         case ARG_version:
             printf("%s", version_text);
             return 0;
+
         case ARG_EXTRA:
 
         case ARG_ERR:

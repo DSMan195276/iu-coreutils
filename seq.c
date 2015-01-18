@@ -10,10 +10,11 @@
 
 #include "arg_parser.h"
 
-static const char *usage_str = "[Flags] [First] [Increment] Last";
-static const char *desc_str  = "First: Number to start counting from. Defaults to 1.\n"
-                               "Increment: Number to increment 'First' by. Defaults to 1.\n"
-                               "Last: Number to count too. Must be provided.\n";
+static const char *arg_str = "[Flags] [First] [Increment] Last";
+static const char *usage_str = "Print a sequence of numbers from First to Last\n";
+static const char *arg_desc_str  = "First: Number to start counting from. Defaults to 1.\n"
+                                   "Increment: Number to increment 'First' by. Defaults to 1.\n"
+                                   "Last: Number to count too. Must be provided.\n";
 
 #define XARGS \
     X(help, "help", 'h', 0, NULL, "Display help") \
@@ -47,7 +48,7 @@ int main(int argc, char **argv) {
     while ((ret = arg_parser(argc, argv, seq_args)) != ARG_DONE) {
         switch (ret) {
         case ARG_help:
-            display_help_text(argv[0], usage_str, desc_str, seq_args);
+            display_help_text(argv[0], arg_str, usage_str, arg_desc_str, seq_args);
             break;
         case ARG_version:
             printf("%s", version_text);

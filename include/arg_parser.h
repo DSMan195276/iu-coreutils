@@ -15,7 +15,7 @@ struct arg {
 #define ARG_PARSER_DONE -1
 
 int arg_parser(int parser_argc, char **parser_argv, const struct arg *args);
-void display_help_text(const char *prog, const char *usage, const char *desc, const struct arg *args);
+void display_help_text(const char *prog, const char *arg_str, const char *usage, const char *arg_desc_str, const struct arg *args);
 
 extern const void *argarg;
 

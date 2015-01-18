@@ -15,8 +15,11 @@
 #include "arg_parser.h"
 #include "file.h"
 
-static const char *usage_str = "";
-static const char *desc_str  = "";
+static const char *args_str = "[Flags] [Files]";
+static const char *usage_str  = "Concatentate Files and/or standard input to standard output.\n";
+static const char *arg_desc_str = "Files: List of files to Concatenate into output.\n"
+                                  "       Defaults to standard in, and the file '-' refers to\n"
+                                  "       standard in\n";
 
 #define XARGS \
     X(help, "help", 'h', 0, NULL, "Display help") \
@@ -48,8 +51,8 @@ int main(int argc, char **argv) {
     while ((ret = arg_parser(argc, argv, args)) != ARG_DONE) {
         switch (ret) {
         case ARG_help:
-            display_help_text(argv[0], usage_str, desc_str, args);
-            break;
+            display_help_text(argv[0], args_str, usage_str, arg_desc_str, args);
+            return 0;
         case ARG_version:
             printf("%s", version_text);
             return 0;
