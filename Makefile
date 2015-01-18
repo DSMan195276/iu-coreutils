@@ -13,6 +13,7 @@ PROGNAMES := \
 	seq \
 	tee \
 	wc \
+	uniq \
 
 PROGBINS := $(patsubst %,$(BINDIR)/%,$(PROGNAMES))
 PROGBINSIU := $(patsubst %,$(BINDIR)/iu/iu%,$(PROGNAMES))
