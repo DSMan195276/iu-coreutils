@@ -10,7 +10,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <sys/select.h>
 
 #include "arg_parser.h"
 #include "file.h"
@@ -59,13 +58,13 @@ int main(int argc, char **argv) {
 
         case ARG_EXTRA:
             has_file = true;
-            file = open_with_dash(argarg, O_RDONLY | O_NONBLOCK);
+            file = open_with_dash(argarg, O_RDONLY);
             if (file == -1) {
                 perror(argarg);
                 return 1;
             }
             output_file(file, argarg, STDOUT_FILENO);
-            close(file);
+            close_with_dash(file);
             break;
 
         case ARG_ERR:
@@ -85,23 +84,16 @@ int main(int argc, char **argv) {
 void output_file(int in, const char *filename, int out) {
   static char buffer[BUFFER_SZ];
   size_t sz;
-  fd_set rdfds;
 
   do {
-      int sel;
-      FD_ZERO(&rdfds);
-      FD_SET(in, &rdfds);
-
-      sel = select(in + 1, &rdfds, NULL, NULL, NULL);
-
-      if (sel == -1) {
-          perror(filename);
-          return ;
-      }
-
       sz = read(in, buffer, sizeof(buffer));
       if (sz == 0)
           break;
+
+      if (sz == -1) {
+          perror(filename);
+          return ;
+      }
 
       write(out, buffer, sz);
   } while (1);

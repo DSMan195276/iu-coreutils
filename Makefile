@@ -6,14 +6,36 @@ BINDIR := bin
 PROGNAMES = \
 	cat \
 	false \
+	getty \
+	head \
+	hexdump \
 	hlsym \
+	kill \
+	link \
+	ln \
 	lnum \
 	ls \
+	mkdir \
+	mkfifo \
+	mknod \
+	more \
+	mount \
+	mv \
+	ping \
+	rm \
+	rmdir \
 	seq \
+	sh \
 	sort \
+	stat \
+	sync \
 	tee \
+	touch \
 	true \
+	tty \
+	umount \
 	uniq \
+	unlink \
 	wc \
 
 

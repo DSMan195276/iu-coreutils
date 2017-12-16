@@ -11,7 +11,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <sys/select.h>
 
 #include "arg_parser.h"
 #include "file.h"
@@ -96,28 +95,20 @@ int main(int argc, char **argv) {
 void read_write_files(void) {
     char buffer[BUF_SIZE];
     int len, i;
-    fd_set rdfds;
     int readfd = STDIN_FILENO;
 
     do {
-        int sel;
-        FD_ZERO(&rdfds);
-        FD_SET(readfd, &rdfds);
-
-        sel = select(readfd + 1, &rdfds, NULL, NULL, NULL);
-
-        if (sel == -1) {
-            perror("stdin");
-            return ;
-        }
-
         len = read(readfd, buffer, sizeof(buffer));
         if (len == 0)
             break;
 
+        if (len == -1) {
+            perror("stdin");
+            break;
+        }
+
         for (i = 0; i < file_count; i++)
             write(file_list[i], buffer, len);
-
     } while (1);
 
     return ;
